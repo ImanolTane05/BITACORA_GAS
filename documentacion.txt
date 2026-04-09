@@ -1,0 +1,38 @@
+DOCUMENTACIÓN DE ARQUITECTURA Y MÓDULOS PRINCIPALES - BITÁCORA GAS
+
+A continuación se detallan los archivos más importantes del sistema, su función y las líneas de código clave para su documentación.
+
+1. CONEXIÓN CON LA BASE DE DATOS (Supabase)
+Archivo: src/lib/supabase.ts
+Líneas: 1 - 16
+Descripción: Este archivo inicializa el cliente de Supabase utilizando las variables de entorno para la URL y la Anon Key. Configura el almacenamiento de sesión con AsyncStorage y habilita la actualización automática de tokens.
+
+2. INICIO DE SESIÓN (Login)
+Archivo: src/modulos/autenticacion/pantallas/LoginScreen.tsx
+Líneas: 16 - 30 (Función handleLogin)
+Descripción: Contiene la lógica principal para autenticar a los usuarios. Valida el formato del correo mediante regex y utiliza AuthService.signIn para validar las credenciales contra Supabase Auth. Si es exitoso, redirige al usuario a la pantalla de inicio.
+
+3. MÓDULO DE USUARIOS (Gestión de Personal)
+Archivo: src/modulos/usuarios/pantallas/UsuariosScreen.tsx
+Líneas: 167 - 237 (Función handleSave)
+Descripción: Implementa la lógica CRUD para los perfiles de usuario. Permite tanto la creación de nuevos usuarios (vía AuthService.signUpConMetadatos) como la actualización de perfiles existentes. Incluye validaciones de fortaleza de contraseña y manejo de errores específicos de Supabase (límites de velocidad, errores de servidor, etc.).
+
+4. MÓDULO DE VEHÍCULOS (Gestión de Unidades)
+Archivo: src/modulos/vehiculos/pantallas/VehiculosScreen.tsx
+Líneas: 118 - 147 (Función handleSave)
+Descripción: Gestiona el registro y edición de las unidades vehiculares del tribunal. Captura datos técnicos como marca, modelo, placas, número de serie y motor. La lógica diferencia entre creación y actualización según si existe un ID de edición activo.
+
+5. MÓDULO DE BITÁCORA (Registro de Viajes)
+Archivo: src/modulos/bitacora/pantallas/BitacoraScreen.tsx
+Líneas: 183 - 235 (Función handleSave)
+Descripción: Implementa la lógica para registrar y editar las entradas de la bitácora de combustible y recorrido. Realiza validaciones críticas (km inicial, vehículo seleccionado) y gestiona los suministros de gasolina y múltiples destinos por viaje.
+
+6. MÓDULO DE REPORTES (Generación de PDF)
+Archivo: src/modulos/reportes/pantallas/ReportesScreen.tsx
+Líneas: 292 - 350 (Función generarPDF)
+Descripción: Controla el flujo de generación de los reportes mensuales. Se encarga de consultar los datos de bitácora del período seleccionado, integrar la información de los perfiles de usuario, generar la estructura HTML necesaria y disparar la impresión del archivo PDF en formato landscape.
+
+--------------------------------------------------------------------------------
+REPORTE PDF (Información Adicional)
+Archivo: src/modulos/reportes/pantallas/ReportesScreen.tsx
+Descripción: Genera reportes mensuales en formato PDF (Landscape). Utiliza expo-print para convertir plantillas HTML dinámicas y expo-file-system/legacy para el manejo de archivos localmente. El reporte incluye codificación base64 para imágenes y cruce de datos (joins) con la tabla de perfiles para mostrar nombres de responsables.
