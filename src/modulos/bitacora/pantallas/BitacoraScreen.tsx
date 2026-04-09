@@ -58,6 +58,8 @@ export default function BitacoraScreen() {
   // Date filter
   const [desde, setDesde] = useState('');
   const [hasta, setHasta] = useState('');
+  const [showDesdeP, setShowDesdeP] = useState(false);
+  const [showHastaP, setShowHastaP] = useState(false);
   const [resultCount, setResultCount] = useState(0);
 
   // Form modal
@@ -302,19 +304,86 @@ export default function BitacoraScreen() {
         {/* Filtro Fechas */}
         <View style={styles.filterCard}>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-            <Feather name="filter" size={16} color="#5b1728" style={{ marginRight: 8 }} />
+            <Feather name="calendar" size={16} color="#5b1728" style={{ marginRight: 8 }} />
             <Text style={styles.filterCardTitle}>Filtrar por fecha</Text>
           </View>
+
+          {/* Atajos rápidos */}
+          <View style={{ flexDirection: 'row', gap: 8, marginBottom: 14 }}>
+            <TouchableOpacity
+              style={styles.quickFilterBtn}
+              onPress={() => {
+                const now = new Date();
+                const primerDia = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+                const ultimoDia = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
+                setDesde(primerDia); setHasta(ultimoDia);
+              }}
+            >
+              <Feather name="clock" size={12} color="#5b1728" />
+              <Text style={styles.quickFilterText}>Este mes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.quickFilterBtn}
+              onPress={() => {
+                const now = new Date();
+                const primerDia = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString().split('T')[0];
+                const ultimoDia = new Date(now.getFullYear(), now.getMonth(), 0).toISOString().split('T')[0];
+                setDesde(primerDia); setHasta(ultimoDia);
+              }}
+            >
+              <Feather name="chevrons-left" size={12} color="#5b1728" />
+              <Text style={styles.quickFilterText}>Mes anterior</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Pickers de fecha */}
           <View style={{ flexDirection: 'row', gap: 12 }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.fieldLabel}>DESDE</Text>
-              <TextInput style={styles.dateInput} placeholder="YYYY-MM-DD" placeholderTextColor="#bbb" value={desde} onChangeText={setDesde} keyboardType="numeric" />
+              <TouchableOpacity style={styles.datePickerBtn} onPress={() => setShowDesdeP(true)} activeOpacity={0.7}>
+                <Feather name="calendar" size={14} color="#5b1728" />
+                <Text style={[styles.datePickerText, !desde && { color: '#bbb' }]}>
+                  {desde ? fmtDate(desde) : 'Seleccionar'}
+                </Text>
+                {desde ? (
+                  <TouchableOpacity onPress={() => setDesde('')} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+                    <Feather name="x" size={13} color="#aaa" />
+                  </TouchableOpacity>
+                ) : null}
+              </TouchableOpacity>
+              {showDesdeP && (
+                <DateTimePicker
+                  value={desde ? new Date(desde + 'T12:00:00') : new Date()}
+                  mode="date"
+                  display="default"
+                  onChange={(_, d) => { setShowDesdeP(false); if (d) setDesde(d.toISOString().split('T')[0]); }}
+                />
+              )}
             </View>
             <View style={{ flex: 1 }}>
               <Text style={styles.fieldLabel}>HASTA</Text>
-              <TextInput style={styles.dateInput} placeholder="YYYY-MM-DD" placeholderTextColor="#bbb" value={hasta} onChangeText={setHasta} keyboardType="numeric" />
+              <TouchableOpacity style={styles.datePickerBtn} onPress={() => setShowHastaP(true)} activeOpacity={0.7}>
+                <Feather name="calendar" size={14} color="#5b1728" />
+                <Text style={[styles.datePickerText, !hasta && { color: '#bbb' }]}>
+                  {hasta ? fmtDate(hasta) : 'Seleccionar'}
+                </Text>
+                {hasta ? (
+                  <TouchableOpacity onPress={() => setHasta('')} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+                    <Feather name="x" size={13} color="#aaa" />
+                  </TouchableOpacity>
+                ) : null}
+              </TouchableOpacity>
+              {showHastaP && (
+                <DateTimePicker
+                  value={hasta ? new Date(hasta + 'T12:00:00') : new Date()}
+                  mode="date"
+                  display="default"
+                  onChange={(_, d) => { setShowHastaP(false); if (d) setHasta(d.toISOString().split('T')[0]); }}
+                />
+              )}
             </View>
           </View>
+
           <View style={{ flexDirection: 'row', gap: 10, marginTop: 12 }}>
             <TouchableOpacity style={[styles.filterActionBtn, { backgroundColor: '#5b1728' }]} onPress={applyDateFilter}>
               <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 13 }}>Aplicar</Text>
@@ -595,6 +664,10 @@ const styles = StyleSheet.create({
   filterCard: { backgroundColor: '#fff', borderRadius: 20, padding: 18, marginBottom: 22, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 2 },
   filterCardTitle: { fontSize: 15, fontWeight: 'bold', color: '#333' },
   dateInput: { backgroundColor: '#f4f4f4', borderRadius: 10, padding: 12, fontSize: 13, color: '#333', borderWidth: 1, borderColor: '#e0e0e0' },
+  datePickerBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#f4f4f4', borderRadius: 10, paddingVertical: 11, paddingHorizontal: 12, borderWidth: 1, borderColor: '#e0e0e0' },
+  datePickerText: { flex: 1, fontSize: 13, color: '#333', fontWeight: '600' },
+  quickFilterBtn: { flexDirection: 'row', alignItems: 'center', gap: 5, paddingVertical: 7, paddingHorizontal: 12, backgroundColor: '#fdf0f3', borderRadius: 20, borderWidth: 1, borderColor: '#f0c8d0' },
+  quickFilterText: { fontSize: 12, color: '#5b1728', fontWeight: '700' },
   filterActionBtn: { flex: 1, paddingVertical: 11, borderRadius: 12, alignItems: 'center' },
 
   listHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 },

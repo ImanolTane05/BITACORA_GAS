@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1775768273244" clover="3.2.0">
+  <project timestamp="1775768273244" name="All files">
+    <metrics statements="20" coveredstatements="20" conditionals="10" coveredconditionals="10" methods="7" coveredmethods="7" elements="37" coveredelements="37" complexity="0" loc="20" ncloc="20" packages="1" files="1" classes="1"/>
+    <file name="validaciones.ts" path="/Users/imanolsancheztaneco/Documents/Proyects/bitacora_gas/src/utils/validaciones.ts">
+      <metrics statements="20" coveredstatements="20" conditionals="10" coveredconditionals="10" methods="7" coveredmethods="7"/>
+      <line num="11" count="6" type="stmt"/>
+      <line num="12" count="6" type="stmt"/>
+      <line num="22" count="6" type="stmt"/>
+      <line num="23" count="6" type="stmt"/>
+      <line num="30" count="3" type="stmt"/>
+      <line num="43" count="6" type="cond" truecount="2" falsecount="0"/>
+      <line num="44" count="4" type="cond" truecount="2" falsecount="0"/>
+      <line num="45" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="46" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="47" count="1" type="stmt"/>
+      <line num="58" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="59" count="2" type="stmt"/>
+      <line num="66" count="2" type="stmt"/>
+      <line num="67" count="2" type="stmt"/>
+      <line num="68" count="2" type="stmt"/>
+      <line num="69" count="2" type="stmt"/>
+      <line num="70" count="2" type="stmt"/>
+      <line num="77" count="3" type="stmt"/>
+      <line num="78" count="3" type="stmt"/>
+      <line num="79" count="3" type="stmt"/>
+    </file>
+  </project>
+</coverage>
