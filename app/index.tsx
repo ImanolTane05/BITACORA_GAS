@@ -40,7 +40,7 @@ export default function Index() {
       <View style={styles.splash}>
         <View style={styles.logoCard}>
           <Image
-            source={require('@/assets/images/logo_app.png')}
+            source={require('@/assets/images/logo.png')}
             style={styles.logo}
             resizeMode="contain"
           />
